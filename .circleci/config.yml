@@ -23,4 +23,4 @@ jobs:
       - setup_remote_docker
       # specify any bash command here prefixed with `run: `
       - run: GO111MODULE=on go mod download
-      - run: GO111MODULE=on go run *.go --help
+      - run: GO111MODULE=on go build
