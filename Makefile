@@ -47,8 +47,8 @@ lint: ## Run all the linters
 		markdownfmt -w README.md
 
 .PHONY: run
-run: build
-	cat wdef.strace | ./scgen
+run:
+	cat wdef.strace | dist/darwin_amd64/scgen
 
 .PHONY: dry_release
 dry_release:
