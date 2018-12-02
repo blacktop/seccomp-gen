@@ -30,6 +30,7 @@ $ strace -ff curl github.com | scgen
 ## TODO
 
 - [ ] add support for consuming sysdig output
+- [ ] only add current arch to arches
 
 ## Issues
 

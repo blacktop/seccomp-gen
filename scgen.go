@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -11,8 +12,28 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/apex/log"
+	clihander "github.com/apex/log/handlers/cli"
 	"github.com/blacktop/seccomp-gen/seccomp"
 )
+
+var requiredSyscalls = []string{
+	"capget",
+	"capset",
+	"chdir",
+	"fchown",
+	"futex",
+	"getdents64",
+	"getpid",
+	"getppid",
+	"lstat",
+	"openat",
+	"prctl",
+	"setgid",
+	"setgroups",
+	"setuid",
+	"stat",
+}
 
 func unique(slice []string, i string) []string {
 	for _, ele := range slice {
@@ -23,25 +44,19 @@ func unique(slice []string, i string) []string {
 	return append(slice, i)
 }
 
+func init() {
+	log.SetHandler(clihander.Default)
+}
+
 func main() {
+
 	var syscall string
 
-	requiredSyscalls := []string{
-		"capget",
-		"capset",
-		"chdir",
-		"fchown",
-		"futex",
-		"getdents64",
-		"getpid",
-		"getppid",
-		"lstat",
-		"openat",
-		"prctl",
-		"setgid",
-		"setgroups",
-		"setuid",
-		"stat",
+	verbosePtr := flag.Bool("verbose", false, "verbose output")
+	flag.Parse()
+
+	if *verbosePtr {
+		log.SetLevel(log.DebugLevel)
 	}
 
 	re := regexp.MustCompile(`^[a-zA-Z_]+\(`)
@@ -51,6 +66,7 @@ func main() {
 	for scanner.Scan() {
 		syscall = re.FindString(scanner.Text())
 		if len(syscall) > 0 {
+			log.Debugf("found syscall: %s", strings.TrimRight(syscall, "("))
 			requiredSyscalls = unique(requiredSyscalls, strings.TrimRight(syscall, "("))
 		}
 	}
