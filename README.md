@@ -8,7 +8,7 @@
 
 ## Why 🤔
 
-This tool allows you to pipe the output of [strace](https://strace.io) through it and it will auto-generate a docker seccomp profile that can be used to only whitelist the syscalls you container needs to run and blacklists everything else.
+This tool allows you to pipe the output of [strace](https://strace.io) through it and will auto-generate a docker seccomp profile that can be used to only whitelist the syscalls your container needs to run and blacklists everything else.
 
 This adds a LOT of security by drastically limiting your attack surface to only what is needed.
 
