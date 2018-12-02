@@ -1,5 +1,7 @@
 # seccomp-gen
 
+[![Circle CI](https://circleci.com/gh/blacktop/seccomp-gen.png?style=shield)](https://circleci.com/gh/blacktop/seccomp-gen) [![Github All Releases](https://img.shields.io/github/downloads/blacktop/seccomp-gen/total.svg)](https://github.com/blacktop/seccomp-gen/releases/latest) [![GitHub release](https://img.shields.io/github/release/blacktop/seccomp-gen.svg)](https://github.com/blacktop/seccomp-gen/releases) [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
+
 > Docker Secure Computing Profile Generator
 
 ---
@@ -40,7 +42,7 @@ $ strace -ff curl github.com 2>&1 | scgen --verbose
 ```bash
 $ ls -lah
 
-drwxr-xr-x   4 blacktop  staff   128B Dec  1 20:24 seccomp
+-rw-r--r--   1 blacktop  staff   6.7K Dec  1 21:23 seccomp.json
 ```
 
 ### Inside Docker
