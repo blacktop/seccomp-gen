@@ -67,6 +67,12 @@ Generate `seccomp` profile from docker logs output
 docker run --rm --security-opt seccomp=unconfined <your>/<image>:scgen 2>&1 | scgen -verbose
 ```
 
+Use your :new: `seccomp` profile
+
+```bash
+docker run --rm --security-opt seccomp=/path/to/seccomp.json <your>/<image>:<tag>
+```
+
 ## Credits
 
 - https://blog.jessfraz.com/post/how-to-use-new-docker-seccomp-profiles/
