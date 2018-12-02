@@ -27,7 +27,7 @@ Download from [releases](https://github.com/blacktop/seccomp-gen/releases/latest
 ## Getting Started
 
 ```bash
-$ strace -ff curl github.com 2>&1 | scgen --verbose
+$ strace -ff curl github.com 2>&1 | scgen -verbose
 
    • found syscall: execve
    • found syscall: brk
@@ -64,7 +64,7 @@ $ docker build -t <your>/<image>:scgen .
 Generate `seccomp` profile from docker logs output
 
 ```bash
-docker run --rm --security-opt seccomp=unconfined <your>/<image>:scgen 2>&1 | scgen --verbose
+docker run --rm --security-opt seccomp=unconfined <your>/<image>:scgen 2>&1 | scgen -verbose
 ```
 
 ## Credits
