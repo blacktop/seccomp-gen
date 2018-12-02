@@ -1,5 +1,5 @@
 REPO=blacktop
-NAME=graboid
+NAME=seccomp-gen
 VERSION=$(shell cat VERSION)
 MESSAGE?="New release ${VERSION}"
 
@@ -46,6 +46,10 @@ lint: ## Run all the linters
 		./...
 		markdownfmt -w README.md
 
+.PHONY: run
+run: build
+	cat wdef.strace | ./scgen
+
 .PHONY: dry_release
 dry_release:
 	goreleaser --skip-publish --rm-dist --skip-validate
@@ -53,7 +57,7 @@ dry_release:
 .PHONY: bump
 bump: ## Incriment version patch number
 	@echo " > Bumping VERSION"
-	@hack/bump/version -p $(shell cat VERSION) > VERSION
+	# @hack/bump/version -p $(shell cat VERSION) > VERSION
 	@git commit -am "bumping version to $(VERSION)"
 	@git push
 
@@ -73,12 +77,10 @@ ci: lint test ## Run all the tests and code checks
 
 build: ## Build a beta version of malice
 	@echo "===> Building Binaries"
-	go build
+	GO111MODULE=on go build -o scgen
 
 clean: ## Clean up artifacts
-	rm *.tar || true
-	rm *.ipsw || true
-	rm rm kernelcache.release.* || true
+	rm seccomp.json || true
 	rm -rf dist
 
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
@@ -86,15 +88,3 @@ help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .DEFAULT_GOAL := help
-
-.PHONY: build
-build:
-	GO111MODULE=on go build -o scgen
-
-.PHONY: run
-run: build
-	cat wdef.strace | ./scgen
-
-clean:
-	rm scgen
-	rm seccomp.json
