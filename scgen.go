@@ -57,10 +57,6 @@ func main() {
 	verbosePtr := flag.Bool("verbose", false, "verbose output")
 	flag.Parse()
 
-	if *verbosePtr {
-		log.SetLevel(log.DebugLevel)
-	}
-
 	re := regexp.MustCompile(`^[a-zA-Z_]+\(`)
 
 	scanner := bufio.NewScanner(os.Stdin)
@@ -78,8 +74,10 @@ func main() {
 		fmt.Fprintln(os.Stderr, "reading standard input:", err)
 	}
 
-	for _, sc := range scs {
-		log.Debugf("found syscall: %s", sc)
+	if *verbosePtr {
+		for _, sc := range scs {
+			log.Infof("found syscall: %s", sc)
+		}
 	}
 
 	requiredSyscalls = append(requiredSyscalls, scs...)

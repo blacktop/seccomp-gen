@@ -48,10 +48,15 @@ lint: ## Run all the linters
 
 .PHONY: run
 run: dry_release
-	cat wdef.strace | dist/darwin_amd64/scgen
+	cat wdef.strace | dist/darwin_amd64/scgen --verbose
+
+.PHONY: run
+run_docker: dry_release
+	docker run --rm --security-opt seccomp=unconfined $(REPO)/$(NAME):test 2>&1 | dist/darwin_amd64/scgen --verbose
 
 .PHONY: dry_release
 dry_release:
+	docker build -t $(REPO)/$(NAME):test .
 	goreleaser --skip-publish --rm-dist --skip-validate
 
 .PHONY: bump
@@ -74,10 +79,6 @@ destroy: ## Remove release from the VERSION
 	git push origin :refs/tags/${VERSION}
 
 ci: lint test ## Run all the tests and code checks
-
-build: ## Build a beta version of malice
-	@echo "===> Building Binaries"
-	GO111MODULE=on go build -o scgen
 
 clean: ## Clean up artifacts
 	rm seccomp.json || true
