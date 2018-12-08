@@ -76,14 +76,14 @@ func main() {
 
 	syscallTemplate.Execute(f, struct {
 		Name          string
-		Timestamp     time.Time
+		Timestamp     string
 		URL64Bit      string
 		URL32Bit      string
 		Syscalls64Bit []string
 		Syscalls32Bit []string
 	}{
 		Name:          "Syscalls32Bit",
-		Timestamp:     time.Now().Format("20060102150405"),
+		Timestamp:     time.Now().Format("2006-01-02"),
 		URL64Bit:      sys64bitURL,
 		URL32Bit:      sys32bitURL,
 		Syscalls64Bit: scs64Bit,
