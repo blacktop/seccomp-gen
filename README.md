@@ -12,6 +12,11 @@ This tool allows you to pipe the output of [strace](https://strace.io) through i
 
 This adds a LOT of security by drastically limiting your attack surface to only what is needed.
 
+## Syscall Arch Supported _(so far)_
+
+- `SCMP_ARCH_X86`
+- `SCMP_ARCH_X32`
+
 ## Install
 
 ### macOS
