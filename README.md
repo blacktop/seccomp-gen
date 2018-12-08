@@ -75,7 +75,7 @@ docker run --rm --security-opt seccomp=unconfined <your>/<image>:scgen 2>&1 | sc
 Use your :new: `seccomp` profile
 
 ```bash
-docker run --rm --security-opt seccomp=/path/to/seccomp.json <your>/<image>:<tag>
+docker run --rm --security-opt no-new-privileges --security-opt seccomp=/path/to/seccomp.json <your>/<image>:<tag>
 ```
 
 #### Know Issue :warning:

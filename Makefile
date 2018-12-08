@@ -52,7 +52,7 @@ run: dry_release
 
 .PHONY: run
 run_docker: dry_release
-	docker run --rm --security-opt="seccomp=unconfined" $(REPO)/$(NAME):test strace 2>&1 | dist/darwin_amd64/scgen --verbose
+	docker run --rm --security-opt="seccomp=unconfined" $(REPO)/$(NAME):test 2>&1 1>/dev/null | tail -n +3 | head -n -2 | awk '{print $(NF)}' | dist/darwin_amd64/scgen --verbose
 	docker run --rm --security-opt="no-new-privileges" --security-opt="seccomp=seccomp.json" $(REPO)/$(NAME):test
 
 .PHONY: dry_release
