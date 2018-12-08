@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"sort"
 	"strings"
 
@@ -22,6 +23,7 @@ var requiredSyscalls = []string{
 	"capget",
 	"capset",
 	"chdir",
+	"execve",
 	"fchown",
 	"futex",
 	"getdents64",
@@ -74,13 +76,13 @@ func main() {
 		fmt.Fprintln(os.Stderr, "reading standard input:", err)
 	}
 
-	if *verbosePtr {
-		for _, sc := range scs {
+	for _, sc := range scs {
+		if *verbosePtr {
 			log.Infof("found syscall: %s", sc)
 		}
+		requiredSyscalls = unique(requiredSyscalls, sc)
 	}
 
-	requiredSyscalls = append(requiredSyscalls, scs...)
 	sort.Strings(requiredSyscalls)
 
 	// write out to file
@@ -91,7 +93,7 @@ func main() {
 	f := filepath.Join(wd, "seccomp.json")
 
 	// write the default profile to the file
-	b, err := json.MarshalIndent(seccomp.DefaultProfile(requiredSyscalls), "", "\t")
+	b, err := json.MarshalIndent(seccomp.DefaultProfile(requiredSyscalls, runtime.GOARCH), "", "\t")
 	if err != nil {
 		panic(err)
 	}

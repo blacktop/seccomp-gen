@@ -1,10 +1,13 @@
 package seccomp
 
 import (
+	"fmt"
+
 	"github.com/docker/docker/api/types"
 )
 
-func arches() []types.Architecture {
+func arches(arch string) []types.Architecture {
+	fmt.Println(arch)
 	return []types.Architecture{
 		{
 			Arch:      types.ArchX86_64,
@@ -38,7 +41,7 @@ func arches() []types.Architecture {
 }
 
 // DefaultProfile defines the whitelist for the default seccomp profile.
-func DefaultProfile(Syscalls []string) *types.Seccomp {
+func DefaultProfile(Syscalls []string, arch string) *types.Seccomp {
 	syscalls := []*types.Syscall{
 		{
 			Names:  Syscalls,
@@ -306,7 +309,7 @@ func DefaultProfile(Syscalls []string) *types.Seccomp {
 
 	return &types.Seccomp{
 		DefaultAction: types.ActErrno,
-		ArchMap:       arches(),
+		ArchMap:       arches(arch),
 		Syscalls:      syscalls,
 	}
 }

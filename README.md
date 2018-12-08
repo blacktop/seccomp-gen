@@ -77,6 +77,7 @@ docker run --rm --security-opt seccomp=/path/to/seccomp.json <your>/<image>:<tag
 
 - https://blog.jessfraz.com/post/how-to-use-new-docker-seccomp-profiles/
 - https://github.com/antitree/syscall2seccomp
+- https://github.com/xfernando/go2seccomp
 
 ## TODO
 

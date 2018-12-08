@@ -52,12 +52,12 @@ run: dry_release
 
 .PHONY: run
 run_docker: dry_release
-	docker run --rm --security-opt seccomp=unconfined $(REPO)/$(NAME):test 2>&1 | dist/darwin_amd64/scgen --verbose
-	docker run --rm --security-opt seccomp=seccomp.json $(REPO)/$(NAME):test
+	docker run --rm --security-opt="seccomp=unconfined" $(REPO)/$(NAME):test strace 2>&1 | dist/darwin_amd64/scgen --verbose
+	docker run --rm --security-opt="no-new-privileges" --security-opt="seccomp=seccomp.json" $(REPO)/$(NAME):test
 
 .PHONY: dry_release
 dry_release:
-	docker build -t $(REPO)/$(NAME):test .
+	docker build -t $(REPO)/$(NAME):test test
 	goreleaser --skip-publish --rm-dist --skip-validate
 
 .PHONY: bump
