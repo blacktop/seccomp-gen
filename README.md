@@ -73,6 +73,10 @@ Use your :new: `seccomp` profile
 docker run --rm --security-opt seccomp=/path/to/seccomp.json <your>/<image>:<tag>
 ```
 
+#### Know Issue :warning:
+
+I have noticed that `strace` misses things, but if you run with the generate seccomp profile docker should tell you the next syscall it needs by erroring out. Then you can add that one manually and repeat the process.
+
 ## Credits
 
 - https://blog.jessfraz.com/post/how-to-use-new-docker-seccomp-profiles/
