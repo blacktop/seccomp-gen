@@ -15,6 +15,7 @@ import (
 	"github.com/apex/log"
 	clihander "github.com/apex/log/handlers/cli"
 	"github.com/blacktop/seccomp-gen/seccomp"
+	"github.com/blacktop/seccomp-gen/seccomp/syscalls"
 )
 
 var requiredSyscalls = []string{
@@ -50,7 +51,8 @@ func init() {
 
 func main() {
 
-	var syscall string
+	var sc string
+	var scs []string
 
 	verbosePtr := flag.Bool("verbose", false, "verbose output")
 	flag.Parse()
@@ -64,10 +66,11 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for scanner.Scan() {
-		syscall = re.FindString(scanner.Text())
-		if len(syscall) > 0 {
-			log.Debugf("found syscall: %s", strings.TrimRight(syscall, "("))
-			requiredSyscalls = unique(requiredSyscalls, strings.TrimRight(syscall, "("))
+		sc = re.FindString(scanner.Text())
+		if len(sc) > 0 {
+			if syscalls.IsValid(strings.TrimRight(sc, "(")) {
+				scs = unique(scs, strings.TrimRight(sc, "("))
+			}
 		}
 	}
 
@@ -75,6 +78,11 @@ func main() {
 		fmt.Fprintln(os.Stderr, "reading standard input:", err)
 	}
 
+	for _, sc := range scs {
+		log.Debugf("found syscall: %s", sc)
+	}
+
+	requiredSyscalls = append(requiredSyscalls, scs...)
 	sort.Strings(requiredSyscalls)
 
 	// write out to file

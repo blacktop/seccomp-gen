@@ -80,7 +80,7 @@ docker run --rm --security-opt seccomp=/path/to/seccomp.json <your>/<image>:<tag
 
 ## TODO
 
-- [ ] filter strace through linux (32|64bit) [tbl](https://github.com/torvalds/linux/blob/master/arch/x86/entry/syscalls/syscall_64.tbl) files like Jess does
+- [x] filter strace through linux (32|64bit) [tbl](https://github.com/torvalds/linux/blob/master/arch/x86/entry/syscalls/syscall_64.tbl) files like Jess does
 - [ ] add support for consuming sysdig output
 - [ ] only add current arch to arches
 

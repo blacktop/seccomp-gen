@@ -1,6 +1,9 @@
-package main
+package syscalls
 
-var defaultSyscalls = []string{
+//go:generate go run gen.go
+
+// DefaultSyscalls are the default docker syscalls
+var DefaultSyscalls = []string{
 	"accept",
 	"accept4",
 	"access",

@@ -3,7 +3,7 @@
 before:
   hooks:
     # you may remove this if you don't use vgo
-    - go mod download
+    # - GO111MODULE=on go mod download
     # you may remove this if you don't need go generate
     - go generate ./...
 builds:
