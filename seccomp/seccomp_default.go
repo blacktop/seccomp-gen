@@ -1,13 +1,11 @@
 package seccomp
 
 import (
-	"fmt"
-
 	"github.com/docker/docker/api/types"
 )
 
 func arches(arch string) []types.Architecture {
-	fmt.Println(arch)
+	// fmt.Println(arch)
 	return []types.Architecture{
 		{
 			Arch:      types.ArchX86_64,

@@ -64,10 +64,10 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for scanner.Scan() {
-		sc = re.FindString(scanner.Text())
+		sc = strings.TrimRight(re.FindString(scanner.Text()), "(")
 		if len(sc) > 0 {
-			if syscalls.IsValid(strings.TrimRight(sc, "(")) {
-				scs = unique(scs, strings.TrimRight(sc, "("))
+			if syscalls.IsValid(sc) {
+				scs = unique(scs, sc)
 			}
 		}
 	}
