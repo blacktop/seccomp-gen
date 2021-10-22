@@ -1,13 +1,10 @@
-# This is an example goreleaser.yaml file with some sane defaults.
-# Make sure to check the documentation at http://goreleaser.com
 before:
   hooks:
-    # you may remove this if you don't use vgo
-    # - GO111MODULE=on go mod download
-    # you may remove this if you don't need go generate
+    - go mod tidy
     - go generate ./...
 builds:
-  - binary: scgen
+  -
+    binary: scgen
     env:
       - CGO_ENABLED=0
     goos:
@@ -16,42 +13,61 @@ builds:
       - linux
     goarch:
       - amd64
+      - arm64
     ldflags: -s -w -X main.AppVersion={{.Version}} -X main.AppBuildTime={{.Date}}
-
-archive:
-  format: tar.gz
-  format_overrides:
-    - goos: windows
-      format: zip
-  replacements:
-    amd64: amd64
-    darwin: macOS
-    linux: linux
-    windows: win
-
-brew:
-  github:
-    owner: blacktop
-    name: homebrew-tap
-  folder: Formula
-  homepage: "https://github.com/blacktop/seccomp-gen"
-  description: "Docker Secure Computing Profile Generator."
-  test: |
-    system "#{bin}/scgen --version"
-
+universal_binaries:
+  - replace: true
+    name_template: "scgen"
+archives:
+  - replacements:
+      darwin: macOS
+      amd64: x86_64
+      all: universal
+    name_template: "scgen_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        format: zip
 checksum:
   name_template: "checksums.txt"
-
-sign:
-  artifacts: checksum
-
+  disable: false
+signs:
+  - artifacts: checksum
 snapshot:
-  name_template: "{{ .Tag }}-next"
-
+  name_template: "{{ incpatch .Version }}-next"
+brews:
+  - name: scgen
+    tap:
+      owner: blacktop
+      name: homebrew-tap
+    folder: Formula
+    homepage: "https://github.com/blacktop/seccomp-gen"
+    description: Docker Secure Computing Profile Generator
+    install: |
+      bin.install "scgen"
+    test: |
+      system "#{bin}/scgen --version"
+rigs:
+  - name: scgen
+    rig:
+      owner: blacktop
+      name: fish-food
+    homepage: https://github.com/blacktop/seccomp-gen
+    description: Docker Secure Computing Profile Generator
+    license: MIT
 changelog:
   sort: asc
+  use: github
   filters:
     exclude:
       - "^docs:"
       - "^test:"
-      - "update README"
+      - "^bumping"
+      - "^Update"
+      - "reorg"
+      - "updates"
+      - Merge pull request
+      - Merge branch
+release:
+  footer: |
+    ## What to do next?
+    - Follow us on [Twitter](https://twitter.com/blacktop__);
